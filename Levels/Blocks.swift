@@ -22,14 +22,14 @@ public struct Modifier{
 }
 
 public struct Block {
-    public var blockID: Int
     public var asset: String
     public var action: Modifier?
     public var solid: Solid?
 }
 
 let blocks = [
-    Block(blockID: 0, asset: "grass", action: nil, solid: Solid(Top: true, Bottom: true, Left: true, Right: true)),
+    //These are searched for by the position in the array. DO NOT edit the order. Only add new blocks.
+    Block(asset: "Grass", action: nil, solid: Solid(Top: true, Bottom: true, Left: true, Right: true)),
 ]
 
 let dummyLevel = [

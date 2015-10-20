@@ -15,14 +15,14 @@ class Editor: SKScene, UIScrollViewDelegate {
     var rows = 40
     var columns = 800
     let menuHeight = CGFloat(40)
+    let borderWidth = CGFloat(0.5);
     
-    var views: [[UIView]?] = []
     let scroll = UIScrollView()
     
     override func didMoveToView(view: SKView) {
         print("MOVED")
         let menu = UIView()
-        menu.backgroundColor = UIColor.whiteColor()
+        menu.backgroundColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
         view.addSubview(menu)
         
         menu.snp_makeConstraints{ make in
@@ -33,15 +33,55 @@ class Editor: SKScene, UIScrollViewDelegate {
         scroll.autoresizingMask = [.FlexibleWidth,.FlexibleHeight]
         scroll.delegate = self
         scroll.contentSize = CGSizeMake(CGFloat(columns)*gridSize,CGFloat(rows)*gridSize+CGFloat(menuHeight))
-        scroll.alwaysBounceHorizontal = false
-        scroll.alwaysBounceVertical = false
+        scroll.bounces = false
         scroll.frame = CGRectMake(0,menuHeight, view.frame.width, view.frame.height)
         
         let bottomPoint = CGPointMake(0, scroll.contentSize.height - scroll.bounds.size.height);
         scroll.setContentOffset(bottomPoint, animated: false)
         
         let user = User(name: "Toby", registered: NSDate(), profilePic: "toby1", flag: "USA")
-        let blocks: [[Int?]?] = []
+        let blocks: [[Int?]?] = [
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil],
+            [nil]
+        ]
         let level = Level(name: "TestLevel", clearCount: 4, playCount: 8, stars: 2, creator: user, beaten: false, layout: blocks)
         loadLevel(level, rawView: view)
     }
@@ -50,58 +90,54 @@ class Editor: SKScene, UIScrollViewDelegate {
         /* Called when a touch begins */
         
         for touch in touches {
-            let location = touch.locationInNode(self)
-            
-            let sprite = SKSpriteNode(imageNamed:"Spaceship")
-            
-            sprite.xScale = 0.5
-            sprite.yScale = 0.5
-            sprite.position = location
-            
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-            
-            sprite.runAction(SKAction.repeatActionForever(action))
-            
-            self.addChild(sprite)
-        }
+                    }
     }
     
     
     func loadLevel(level: Level, rawView: SKView){
-        rawView.backgroundColor = UIColor(red: 102/255, green: 154/255, blue: 210/255, alpha: 1.0)
+        scroll.backgroundColor = UIColor(red: 102/255, green: 154/255, blue: 210/255, alpha: 1.0)
         rawView.addSubview(scroll)
         draw(level.layout)
     }
     
     func draw(blocks: [[Int?]?]){
         for var hIndex = 0; hIndex < rows; ++hIndex{
-            views.insert([], atIndex: hIndex)
-            for var vIndex = 0; vIndex < columns; ++vIndex{
-                let view = UIView()
-                view.frame = CGRectMake(gridSize*CGFloat(vIndex), gridSize*CGFloat(hIndex), gridSize, gridSize)
-                view.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).CGColor
-                view.layer.borderWidth = CGFloat(0.5)
-                views[hIndex]?.insert(view, atIndex: vIndex)
-                
-                if hIndex < blocks.count{
-                    //Valid Horizontal Row
-                    if blocks[hIndex]!.count+1 > views[hIndex]!.count{
-                        //Valid Vertical Column
-                        views[hIndex]![vIndex].backgroundColor = UIColor.redColor()
-                    }
+            //Horizontal Borders
+            let border = UIView()
+            border.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
+            border.frame = CGRectMake(0,(CGFloat(hIndex)*gridSize)-borderWidth,scroll.contentSize.width,borderWidth)
+            scroll.addSubview(border)
+        }
+        for var vIndex = 0; vIndex < columns; ++vIndex{
+            //Vertical Borders
+            let border = UIView()
+            border.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
+            border.frame = CGRectMake((CGFloat(vIndex)*gridSize)-borderWidth,0, borderWidth, scroll.contentSize.height)
+            scroll.addSubview(border)
+        }
+        
+        for var hIndex = 0; hIndex < blocks.count; ++hIndex{
+            for var vIndex = 0; vIndex < blocks[hIndex]!.count; ++vIndex{
+                if blocks[hIndex]![vIndex] != nil{
+                    print("GOT BLOCK AT (\(hIndex),\(vIndex))")
+                    generateBlock(blocks[hIndex]![vIndex]!, frame: CGRectMake(CGFloat(vIndex)*gridSize, CGFloat(hIndex)*gridSize, gridSize, gridSize))
                 }
-                
-                
-                scroll.addSubview(view)
             }
         }
+
     }
     
-    func scrollViewDidZoom(scrollView: UIScrollView) {
-        print("TEST")
-    }
-    func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView?) {
-        print("TEST2")
+    func generateBlock(bID: Int, frame: CGRect){
+        print(blocks.count)
+        print(bID)
+        if blocks.count > bID{
+            //ERROR RED ALERT
+            return
+        }
+        let block = blocks[bID-1]
+        let node = UIImageView(frame: frame);
+        node.image = UIImage(named: block.asset)
+        scroll.addSubview(node)
     }
     
     override func update(currentTime: CFTimeInterval) {
