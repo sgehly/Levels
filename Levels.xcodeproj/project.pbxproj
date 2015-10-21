@@ -12,12 +12,13 @@
 		C1010BCC1BD2C2FE004CF833 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1010BCA1BD2C2FE004CF833 /* Main.storyboard */; };
 		C1010BCE1BD2C2FE004CF833 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C1010BCD1BD2C2FE004CF833 /* Assets.xcassets */; };
 		C1010BD11BD2C2FE004CF833 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1010BCF1BD2C2FE004CF833 /* LaunchScreen.storyboard */; };
-		C116190A1BD59E35006BB658 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11619081BD59E35006BB658 /* ViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		C116190B1BD59E35006BB658 /* Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11619091BD59E35006BB658 /* Editor.swift */; settings = {ASSET_TAGS = (); }; };
-		C116190D1BD5A01A006BB658 /* Editor.sks in Resources */ = {isa = PBXBuildFile; fileRef = C116190C1BD5A01A006BB658 /* Editor.sks */; settings = {ASSET_TAGS = (); }; };
+		C116190A1BD59E35006BB658 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11619081BD59E35006BB658 /* ViewController.swift */; };
+		C116190B1BD59E35006BB658 /* Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11619091BD59E35006BB658 /* Editor.swift */; };
+		C116190D1BD5A01A006BB658 /* Editor.sks in Resources */ = {isa = PBXBuildFile; fileRef = C116190C1BD5A01A006BB658 /* Editor.sks */; };
 		C11D5BBA1BD2D14C00DACC09 /* Blocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11D5BB91BD2D14C00DACC09 /* Blocks.swift */; };
 		C11D5BBC1BD2D2A300DACC09 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11D5BBB1BD2D2A300DACC09 /* Level.swift */; };
 		C11D5BBE1BD2D2F600DACC09 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11D5BBD1BD2D2F600DACC09 /* User.swift */; };
+		C199D34A1BD5CE6B00B2E45C /* LevelScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C199D3491BD5CE6B00B2E45C /* LevelScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		C11D5BB91BD2D14C00DACC09 /* Blocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Blocks.swift; sourceTree = "<group>"; };
 		C11D5BBB1BD2D2A300DACC09 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		C11D5BBD1BD2D2F600DACC09 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C199D3491BD5CE6B00B2E45C /* LevelScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelScrollView.swift; sourceTree = "<group>"; };
 		DF506AB443AEBEDD168268AE /* Pods-Levels.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Levels.release.xcconfig"; path = "Pods/Target Support Files/Pods-Levels/Pods-Levels.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -98,6 +100,7 @@
 		C168A9B51BD309B600BA3B59 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				C199D3491BD5CE6B00B2E45C /* LevelScrollView.swift */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
@@ -246,6 +249,7 @@
 				C11D5BBA1BD2D14C00DACC09 /* Blocks.swift in Sources */,
 				C11D5BBC1BD2D2A300DACC09 /* Level.swift in Sources */,
 				C11D5BBE1BD2D2F600DACC09 /* User.swift in Sources */,
+				C199D34A1BD5CE6B00B2E45C /* LevelScrollView.swift in Sources */,
 				C116190A1BD59E35006BB658 /* ViewController.swift in Sources */,
 				C1010BC71BD2C2FE004CF833 /* AppDelegate.swift in Sources */,
 			);

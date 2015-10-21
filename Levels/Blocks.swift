@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public struct Solid {
     public var Top: Bool?
@@ -35,3 +36,27 @@ let blocks = [
 let dummyLevel = [
     [blocks[0],blocks[0],blocks[0],blocks[0]]
 ]
+
+func generateBlock(bID: Int, frame: CGRect, reference: UIView) -> UIView{
+    if blocks.count > bID{
+        return UIView()
+    }
+    let block = blocks[bID-1]
+    let node = UIImageView(frame: frame);
+    node.image = UIImage(named: block.asset)
+    return node
+}
+
+func generateTranslucentBlock(bID: Int, frame: CGRect)->UIView{
+    var block: Block? = nil
+    
+    if blocks.count > bID{
+        block = blocks[0]
+    }else{
+        block = blocks[bID-1]
+    }
+    let node = UIImageView(frame: frame);
+    node.layer.opacity = 0.4
+    node.image = UIImage(named: block!.asset)
+    return node
+}
