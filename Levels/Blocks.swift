@@ -28,20 +28,16 @@ public struct Block {
     public var solid: Solid?
 }
 
-let blocks = [
+let globalBlocks: [Block] = [
     //These are searched for by the position in the array. DO NOT edit the order. Only add new blocks.
     Block(asset: "Grass", action: nil, solid: Solid(Top: true, Bottom: true, Left: true, Right: true)),
 ]
 
-let dummyLevel = [
-    [blocks[0],blocks[0],blocks[0],blocks[0]]
-]
-
 func generateBlock(bID: Int, frame: CGRect, reference: UIView) -> UIView{
-    if blocks.count > bID{
+    if globalBlocks.count < bID{
         return UIView()
     }
-    let block = blocks[bID-1]
+    let block = globalBlocks[bID]
     let node = UIImageView(frame: frame);
     node.image = UIImage(named: block.asset)
     return node
@@ -50,10 +46,10 @@ func generateBlock(bID: Int, frame: CGRect, reference: UIView) -> UIView{
 func generateTranslucentBlock(bID: Int, frame: CGRect)->UIView{
     var block: Block? = nil
     
-    if blocks.count > bID{
-        block = blocks[0]
+    if globalBlocks.count > bID{
+        block = globalBlocks[0]
     }else{
-        block = blocks[bID-1]
+        block = globalBlocks[bID-1]
     }
     let node = UIImageView(frame: frame);
     node.layer.opacity = 0.4

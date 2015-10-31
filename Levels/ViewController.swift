@@ -20,9 +20,13 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         return false
     }
     
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Landscape
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Test")
+        
         if let scene = Editor(fileNamed: "Editor"){
             let mainView = self.view as! SKView
             mainView.showsNodeCount = true
