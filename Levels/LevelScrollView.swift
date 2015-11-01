@@ -23,7 +23,7 @@ class LevelScrollView: UIScrollView, UIScrollViewDelegate{
     var blocks: [(x: CGFloat, y: CGFloat, block: Block)] = []
     
     init(reference: UIView){
-        super.init(frame: CGRectMake(0, 0, reference.frame.width, reference.frame.height))
+        super.init(frame: CGRectMake(80, 0, reference.frame.width, reference.frame.height))
         self.reference = reference
         self.autoresizingMask = [.FlexibleWidth,.FlexibleHeight]
         self.delegate = self
