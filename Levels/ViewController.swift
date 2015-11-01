@@ -11,7 +11,7 @@ import SpriteKit
 import SnapKit
 
 class ViewController: UIViewController, UIScrollViewDelegate {
-    
+
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
@@ -27,14 +27,9 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let scene = Editor(fileNamed: "Editor"){
-            let mainView = self.view as! SKView
-            mainView.showsNodeCount = true
-            mainView.showsFPS = true
-            mainView.ignoresSiblingOrder = true
-            scene.scaleMode = .AspectFill
-            mainView.presentScene(scene)
-        }
+        let editorView = Editor()
+        self.view.addSubview(editorView.view)
+        editorView.view.frame = self.view.frame
     }
     
     override func didReceiveMemoryWarning() {
