@@ -15,5 +15,7 @@ public struct Level{
     public var stars: Int
     public var creator: User
     public var beaten: Bool
-    public var layout: [[Int?]?]
+    public var playerCoords: (x: Int, y: Int)
+    public var theme: Theme
+    public var blocks: [(x: Int, y: Int, block: Int)]
 }

@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "logov1.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "logov1-2.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "piq_55640_100x100.png",
+      "filename" : "logos3.png",
       "scale" : "3x"
     }
   ],

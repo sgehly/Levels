@@ -12,6 +12,9 @@ import SnapKit
 
 class ViewController: UIViewController, UIScrollViewDelegate {
 
+    
+    //CONFIGURATION
+
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
@@ -21,15 +24,22 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.Landscape
+        return UIInterfaceOrientationMask.All
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let editorView = Editor()
+        /*let menu = MenuViewController()
+        self.view.addSubview(menu.view)
+        menu.view.frame = self.view.frame*/
+        
+        let play = PlayController()
+        self.view.addSubview(play.view)
+
+        /*let editorView = Editor(edit: true, blocks: [])
         self.view.addSubview(editorView.view)
-        editorView.view.frame = self.view.frame
+        editorView.view.frame = self.view.frame*/
     }
     
     override func didReceiveMemoryWarning() {

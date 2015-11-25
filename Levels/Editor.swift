@@ -11,55 +11,59 @@ import SnapKit
 class Editor: UIViewController, UIScrollViewDelegate {
     
     let menuHeight = CGFloat(60)
+    var edit = true
     var editor: LevelScrollView? = nil
     let sc = UIScrollView()
+    var blocks: [(x: CGFloat, y: CGFloat, block: Int)] = []
     
+    init(edit: Bool, blocks: [(x: CGFloat, y: CGFloat, block: Int)]){
+        super.init(nibName: nil, bundle: nil)
+        self.edit = edit
+        self.blocks = blocks
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         self.view.addSubview(sc)
         
-        let user = User(name: "Toby", registered: NSDate(), profilePic: "toby1", flag: "USA")
-        let blocks: [[Int?]?] = []
-        let level = Level(name: "TestLevel", clearCount: 4, playCount: 8, stars: 2, creator: user, beaten: false, layout: blocks)
+        let editor = LevelScrollView(reference: sc, edit: edit, level: demoLevel)
+        sc.delegate = self
 
-        
-        let editor = LevelScrollView(reference: sc)
-        editor.frame = sc.frame
+        editor.frame = CGRectMake(0, sc.frame.minY, sc.frame.width, sc.frame.height)
         self.editor = editor
         sc.addSubview(editor)
+        sc.backgroundColor = UIColor.blackColor()
         
-        let menu = UIView()
-        menu.backgroundColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
-        self.view.addSubview(menu)
-        menu.frame = CGRectMake(0,0, view.frame.width, menuHeight)
-        let navBar = MenuCollectionView(frame: menu.frame, collectionViewLayout: UICollectionViewLayout(), reference: editor)
-        menu.addSubview(navBar)
+        if edit{
+            let menu = UIView()
+            menu.backgroundColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
+            self.view.addSubview(menu)
+            menu.frame = CGRectMake(0,0, view.frame.width, menuHeight)
+            let navBar = MenuCollectionView(frame: menu.frame, collectionViewLayout: UICollectionViewLayout(), reference: editor)
+            menu.addSubview(navBar)
+            sc.minimumZoomScale = 0.5
+            sc.maximumZoomScale = 4.0
+            sc.zoomScale = 0.5
+            sc.frame = CGRectMake(0,menuHeight,self.view.frame.width,self.view.frame.height-menuHeight)
+        }else{
+            sc.zoomScale = 0.5
+            sc.frame = CGRectMake(0,0,self.view.frame.width,self.view.frame.height)
+            sc.scrollEnabled = false
+            editor.scrollEnabled = false
+        }
         
-        sc.delegate = self
-        sc.minimumZoomScale = 1.0
-        sc.maximumZoomScale = 4.0
-        sc.zoomScale = 2.0
-        
-        sc.frame = CGRectMake(0,menuHeight,self.view.frame.width*sc.zoomScale,(self.view.frame.height*sc.zoomScale)-menuHeight)
-
-        sc.userInteractionEnabled = true
+        sc.bouncesZoom = false
         sc.scrollEnabled = false
+        
+        var helloWorldTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("checkPinch"), userInfo: nil, repeats: true)
     }
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        print("Scrolld")
-    }
-    func scrollViewWillBeginZooming(scrollView: UIScrollView, withView view: UIView?) {
-        print("scrollViewWillBeginZooming")
-    }
-    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
-        print("scrollViewDidEndZooming")
+    func checkPinch(){
     }
     func scrollViewDidZoom(scrollView: UIScrollView) {
-        print("scrollViewDidZoom")
     }
-    
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        print(sc.subviews)
         return sc.subviews[0]
     }
     
