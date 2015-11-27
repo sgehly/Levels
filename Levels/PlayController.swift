@@ -18,8 +18,9 @@ class PlayController: UIViewController{
         self.view = SKView(frame: self.view.frame)
         let scene = PlayScene(level: demoLevel)
         let skView = self.view as! SKView
-        //skView.showsFPS = true
-        //skView.showsNodeCount = true
+        scene.size = skView.bounds.size
+        skView.showsFPS = true
+        skView.showsNodeCount = true
         skView.showsPhysics = true
         skView.presentScene(scene)
     }

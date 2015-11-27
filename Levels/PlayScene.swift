@@ -24,6 +24,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     let Person:UInt32 = 1 << 1
     var xRate: CGFloat = 0.00
     var yRate: CGFloat = 0.00
+    var friction: Bool = false
     
     init(level: Level){
         super.init(size: UIScreen.mainScreen().bounds.size)
@@ -124,12 +125,61 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         var rawY = self.char!.physicsBody!.velocity.dy+relativeVelocity.dy*yRate
         var rawX = self.char!.physicsBody!.velocity.dx+relativeVelocity.dx*xRate
         
+        if floor(rawY) <= 0{
+            if self.friction != true{
+                for i in self.children{
+                    i.physicsBody?.friction = 1
+                }
+            }
+        
+            self.friction = true
+ 
+        }else{
+            if self.friction != false{
+                for i in self.children{
+                    i.physicsBody?.friction = 0
+                }
+            }
+            var isBlock = collisionDetect(Collision.X)
+            print(isBlock)
+            if isBlock{
+                rawX = 0
+            }
+            self.friction = false
+        }
+        
         if rawY == yCharSpeed{
             NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: Selector("fall"), userInfo: nil, repeats: false)
         }
         
         self.char!.physicsBody!.velocity=CGVectorMake(rawX, rawY)
         return
+    }
+
+    func collisionDetect(detect: Collision) -> Bool{
+        print("=====[Sam's Super Special Collision Detection]=====")
+        //CharPos deals with x+GridSize (The right side) and x+(gridSize)*2 (The top side)
+        var charPos = floor(self.char!.position.x+gridSize)
+        if detect == Collision.Y{
+            charPos = floor(self.char!.position.y+(gridSize)*2)
+        }
+        
+        print("Character Position (right): \(charPos)")
+        print("Blocks:")
+        
+        for i in self.children{
+            var position = i.position.x
+            if detect == Collision.Y{
+                position = i.position.y
+            }
+            let blockPos = floor(position)
+            print(blockPos)
+            if charPos == blockPos{
+                print("There's a block there!")
+                return true
+            }
+        }
+        return false
     }
     
     func placeObject(x:CGFloat, y:CGFloat, height:CGFloat, width:CGFloat, asset:String, physicsType: Physics) -> SKSpriteNode{
@@ -138,50 +188,17 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         node.size = CGSize(width: width*gridSize, height: height*gridSize)
         switch physicsType{
             case .Block:
-                node.physicsBody = SKPhysicsBody(edgeLoopFromRect:CGRect(origin:CGPointMake(-node.size.width/2, -node.size.height/2),size:node.size))
-                node.physicsBody!.dynamic = true
-                node.physicsBody!.allowsRotation = false
-                node.physicsBody!.restitution = 0
-                node.physicsBody!.linearDamping = 0
-                node.physicsBody!.categoryBitMask = Block
-                node.physicsBody!.usesPreciseCollisionDetection = true
-                node.name = "Block"
+                node.physicsBody = SKPhysicsBody(edgeLoopFromRect:CGRectMake(-gridSize/2,-gridSize/2,gridSize,gridSize))
             break;
             case .Person:
                 node.physicsBody = SKPhysicsBody(rectangleOfSize: node.size)
-                node.physicsBody!.dynamic = true
-                node.physicsBody!.restitution = 0
-                node.physicsBody!.linearDamping = 0
                 node.physicsBody!.allowsRotation = false
-                node.physicsBody!.collisionBitMask = Block
-                node.physicsBody!.usesPreciseCollisionDetection = true
+                node.physicsBody!.dynamic = true
             break;
             default:
             break;
         }
         addChild(node)
         return node
-    }
-    
-    func didBeginContact(contact: SKPhysicsContact) {
-        /*A = Block, B = Person
-        //Compare bottom of block + gridSize to simple position of character
-        let blockPosition = contact.bodyB.node!.position
-        let charPosition = contact.bodyA.node!.position
-        
-        let blockTop = floor(blockPosition.y-gridSize)
-        let personBottom = floor(charPosition.y+gridSize/2)
-        print("=======")
-        print("[Physics] BlockPos: \(blockPosition) | CharPos: \(charPosition)")
-        print("[Physics] BlockTop: \(blockTop) | PersonBottom: \(personBottom)")
-        print("=======")
-        
-        if personBottom == blockTop{
-            contact.bodyA.friction = 1
-            contact.bodyB.friction = 1
-        }else{
-            contact.bodyA.friction = 0
-            contact.bodyB.friction = 0
-        }*/
     }
 }

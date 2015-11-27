@@ -20,3 +20,10 @@ public enum RunDirection{
     case Down
     case None
 }
+
+public enum Collision{
+    case X
+    case Y
+    case None
+    case All
+}
