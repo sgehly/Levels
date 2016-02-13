@@ -30,9 +30,12 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        /*let menu = MenuViewController()
-        self.view.addSubview(menu.view)
-        menu.view.frame = self.view.frame*/
+        /*let nav = UINavigationController()
+        nav.setViewControllers([MenuViewController()], animated: false)
+        nav.setNavigationBarHidden(true, animated: false)
+        self.presentViewController(nav, animated: false, completion: nil)
+        self.view.addSubview(nav.view)
+        nav.view.frame = self.view.frame*/
         
         let play = PlayController()
         self.view.addSubview(play.view)

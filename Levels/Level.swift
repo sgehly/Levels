@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public struct Level{
     public var name: String
@@ -15,7 +16,7 @@ public struct Level{
     public var stars: Int
     public var creator: User
     public var beaten: Bool
-    public var playerCoords: (x: Int, y: Int)
+    public var playerCoords: (x: CGFloat, y: CGFloat)
     public var theme: Theme
-    public var blocks: [(x: Int, y: Int, block: Int)]
+    public var blocks: [(x: CGFloat, y: CGFloat, block: Int)]
 }

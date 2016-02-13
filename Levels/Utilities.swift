@@ -21,3 +21,8 @@ func UIColorFromRGB(colorCode: String, alpha: Float = 1.0) -> UIColor {
     
     return UIColor(red: r, green: g, blue: b, alpha: CGFloat(alpha))
 }
+
+public enum MenuType{
+    case SP
+    case MP
+}

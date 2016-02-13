@@ -11,13 +11,11 @@ import SpriteKit
 import UIKit
 import SnapKit
 
-class PlayScene: SKScene, SKPhysicsContactDelegate {
+class PlayScene: SKScene {
     
     //Objects
     var level: Level? = nil
     var char: SKSpriteNode? = nil
-    var xCharSpeed: CGFloat = 300
-    var yCharSpeed: CGFloat = 400
     
     //Physics
     let Block:UInt32 = 1 << 0
@@ -25,7 +23,10 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     var xRate: CGFloat = 0.00
     var yRate: CGFloat = 0.00
     var friction: Bool = false
-    
+    var xCharSpeed: CGFloat = 300
+    var yCharSpeed: CGFloat = 400
+    var currentSpeed: CGFloat = 0.0
+
     init(level: Level){
         super.init(size: UIScreen.mainScreen().bounds.size)
         self.level = level
@@ -85,10 +86,11 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
 
         self.backgroundColor = mainBGColor
-        physicsWorld.gravity = CGVectorMake(0, -9.8)
-        physicsWorld.contactDelegate = self
+        
+        physicsWorld.gravity = CGVectorMake(0, -9.80665)
+        
         for i in level!.blocks{
-            placeObject(CGFloat(i.x), y: CGFloat(i.y), height: 1.0, width: 1.0, asset: globalBlocks[i.block].asset, physicsType: .Block)
+            placeObject(i.x, y: i.y, height: 1.0, width: 1.0, asset: globalBlocks[i.block].asset, physicsType: .Block)
         }
         self.char = placeObject(CGFloat(level!.playerCoords.x), y: CGFloat(level!.playerCoords.y), height: 2.0, width: 1.0, asset: "pip", physicsType: Physics.Person)
     }
@@ -98,11 +100,11 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         return
     }
     func moveLeft(){
-        self.xRate = -1.0
+        self.xRate = -0.5
         return
     }
     func moveRight(){
-        self.xRate = 1.0
+        self.xRate = 0.5
         return
     }
     func jump(){
@@ -122,31 +124,17 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
         let relativeVelocity: CGVector = CGVectorMake(xVel, yCharSpeed-self.char!.physicsBody!.velocity.dy)
         
-        var rawY = self.char!.physicsBody!.velocity.dy+relativeVelocity.dy*yRate
+        let rawY = self.char!.physicsBody!.velocity.dy+relativeVelocity.dy*yRate
         var rawX = self.char!.physicsBody!.velocity.dx+relativeVelocity.dx*xRate
         
-        if floor(rawY) <= 0{
-            if self.friction != true{
-                for i in self.children{
-                    i.physicsBody?.friction = 1
-                }
-            }
-        
-            self.friction = true
- 
-        }else{
-            if self.friction != false{
-                for i in self.children{
-                    i.physicsBody?.friction = 0
-                }
-            }
-            var isBlock = collisionDetect(Collision.X)
-            print(isBlock)
-            if isBlock{
-                rawX = 0
-            }
-            self.friction = false
+        //Fake friction
+        if rawX < 0 && rawY == 0 && currentSpeed < rawX{
+            rawX = 0
         }
+        if rawX > 0 && rawY == 0 && currentSpeed > rawX{
+            rawX = 0
+        }
+        currentSpeed = rawX
         
         if rawY == yCharSpeed{
             NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: Selector("fall"), userInfo: nil, repeats: false)
@@ -156,31 +144,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         return
     }
 
-    func collisionDetect(detect: Collision) -> Bool{
-        print("=====[Sam's Super Special Collision Detection]=====")
-        //CharPos deals with x+GridSize (The right side) and x+(gridSize)*2 (The top side)
-        var charPos = floor(self.char!.position.x+gridSize)
-        if detect == Collision.Y{
-            charPos = floor(self.char!.position.y+(gridSize)*2)
-        }
-        
-        print("Character Position (right): \(charPos)")
-        print("Blocks:")
-        
-        for i in self.children{
-            var position = i.position.x
-            if detect == Collision.Y{
-                position = i.position.y
-            }
-            let blockPos = floor(position)
-            print(blockPos)
-            if charPos == blockPos{
-                print("There's a block there!")
-                return true
-            }
-        }
-        return false
-    }
     
     func placeObject(x:CGFloat, y:CGFloat, height:CGFloat, width:CGFloat, asset:String, physicsType: Physics) -> SKSpriteNode{
         let node = SKSpriteNode(imageNamed: asset)
@@ -188,16 +151,26 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         node.size = CGSize(width: width*gridSize, height: height*gridSize)
         switch physicsType{
             case .Block:
-                node.physicsBody = SKPhysicsBody(edgeLoopFromRect:CGRectMake(-gridSize/2,-gridSize/2,gridSize,gridSize))
+                var path = CGPathCreateWithEllipseInRect(node.frame, nil)
+                node.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRectMake(-node.size.width/2, -node.size.height/2, gridSize, gridSize))
+                node.physicsBody?.dynamic = false
             break;
             case .Person:
+                let mb = SKPhysicsBody(rectangleOfSize: CGSizeMake(node.size.width,node.size.height-4), center: CGPointMake(0,4))
+                mb.friction = 0
+                let fb = SKPhysicsBody(rectangleOfSize: CGSizeMake(node.size.width,4), center: CGPointMake(0,-node.size.height/2))
+                fb.friction = 1
+                node.physicsBody = SKPhysicsBody(bodies: [mb,fb])
                 node.physicsBody = SKPhysicsBody(rectangleOfSize: node.size)
-                node.physicsBody!.allowsRotation = false
-                node.physicsBody!.dynamic = true
+                node.physicsBody?.contactTestBitMask = node.physicsBody!.collisionBitMask
+                node.physicsBody?.dynamic = true
             break;
             default:
             break;
         }
+        node.physicsBody!.usesPreciseCollisionDetection = true
+        node.physicsBody!.restitution = 0
+        node.physicsBody!.allowsRotation = false
         addChild(node)
         return node
     }

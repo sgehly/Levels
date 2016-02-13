@@ -19,7 +19,7 @@ let demoLevel = Level(name: "Test",
     stars: 3,
     creator: User(name: "TobyG123", registered: NSDate(), profilePic: "gehly", flag: "USA"),
     beaten: false,
-    playerCoords: (3,36),
+    playerCoords: (2,36),
     theme: Theme.retro,
     blocks: [
         (x:0,y:39, block: 0),

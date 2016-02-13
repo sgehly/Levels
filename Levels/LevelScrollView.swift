@@ -18,7 +18,7 @@ class LevelScrollView: UIScrollView, UIScrollViewDelegate{
     var edit = true
     
     //For upload. No touchy.
-    var blocks: [(x: Int, y: Int, block: Int)] = []
+    var blocks: [(x: CGFloat, y: CGFloat, block: Int)] = []
     
     init(reference: UIScrollView, edit: Bool, level: Level){
         super.init(frame: CGRectMake(0, 0, reference.frame.width, reference.frame.height))
@@ -95,13 +95,13 @@ class LevelScrollView: UIScrollView, UIScrollViewDelegate{
             let block = generateBlock(self.selected, frame: frame, reference: self)
             self.prevLoc = frame
             self.addSubview(block)
-            blocks.append((x: Int(x), y: Int(y), block: self.selected))
+            blocks.append((x: x, y: y, block: self.selected))
             print(blocks)
         }
     }
     
-    func placeBlock(x: Int, y: Int, block: Int){
-        var frame = CGRectMake(CGFloat(CGFloat(x)*gridSize)+0.5, CGFloat(y)*gridSize+0.5, gridSize, gridSize)
+    func placeBlock(x: CGFloat, y: CGFloat, block: Int){
+        var frame = CGRectMake(CGFloat(x*gridSize)+0.5, y*gridSize+0.5, gridSize, gridSize)
         let block = generateBlock(block, frame: frame, reference: self)
         self.prevLoc = frame
         self.addSubview(block)

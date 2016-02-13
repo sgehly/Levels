@@ -11,3 +11,5 @@ import UIKit
 
 let mainButtonColor = UIColorFromRGB("facd00")
 let mainBGColor = UIColor(red: 102/255, green: 154/255, blue: 210/255, alpha: 1.0)
+let mainFont = UIFont(name: "Menlo-Regular", size: 52)
+let mainSubFont = UIFont(name: "Menlo-Regular", size: 36)
